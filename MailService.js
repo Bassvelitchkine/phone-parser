@@ -45,7 +45,7 @@
      */
     function messagesProcessing(messages){
     // Filter out messages sent from the stop domains
-    const stopDomains = variables()["PROCESSING"]["domainStopList"];
+    const stopDomains = globalVariables()["PROCESSING"]["domainStopList"];
     const filteredMessages = messages.filter(message => {
         const messageSender = message.getFrom();
         const toKeep = stopDomains.map(stopDomain => !messageSender.match(stopDomain)).reduce((acc, elem) => acc && elem, true)
