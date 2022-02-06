@@ -5,6 +5,36 @@
 function SheetInteractions() {
 
     /**
+     * A function to write data in a sheet after all the data that's already been written in it.
+     * @param {String} sheetName the name of the sheet where to write the data
+     * @param {Array} data the 2D-Array of data to append to the sheet
+     */
+    function _writeAfter(sheetName, data){
+        const spreadsheetId = globalVariables()["SPREADSHEET"]["spreadsheetId"];
+        sheet = SpreadsheetApp.openById(spreadsheetId).getSheetByName(sheetName);
+        const lastRow = sheet.getDataRange().getLastRow();
+        sheet.insertRowAfter(lastRow);
+        sheet.getRange(lastRow + 1, 1, data.length, data[0].length).setValues(data);
+    };
+
+    /**
+     * A function to retrieve the data from a given column in the spreadsheet
+     * @param {String} sheetName the name of the sheet where we want to get the data
+     * @param {String} columnTitle the column name where we want to get the data (column names can be found as keys in the global variables of the file variables.js).
+     * @returns {Array} the array that contains the non empty data from the spreadsheet and without the column headers
+     * 
+     * getColumnData("Contacts", "email")
+     * // => ["bastien.velitchkine@gmail.com", "dean.lamb@archspire.death", ...];
+     */
+    function _getColumnData(sheetName, columnTitle){
+        const spreadsheetVar = globalVariables()["SPREADSHEET"];
+        const emailColumn = spreadsheetVar["contactSheet"][columnTitle];
+        const spreadsheet = SpreadsheetApp.openById(spreadsheetVar["spreadsheetId"]);
+        const contactsRange = spreadsheet.getSheetByName(sheetName).getRange(emailColumn);
+        return contactsRange.getValues().flat().filter((elem, index) => index !== 0 && elem !== "");
+    }
+
+    /**
      * A function to get the list of every contact email processed hitherto excluding email addresses when a phone number was found in the CRM or updated.
      * @returns {Array} an array with every email address processed insofar, except for those stated above
      * 
@@ -14,8 +44,8 @@ function SheetInteractions() {
     function _retrieveEmailsToExclude(){
         const spreadsheetVar = globalVariables()["SPREADSHEET"];
         const sheetName = spreadsheetVar["contactSheet"]["sheetName"];
-        const emailData = getColumnData(sheetName, "email");
-        const statusData = getColumnData(sheetName, "status")
+        const emailData = _getColumnData(sheetName, "email");
+        const statusData = _getColumnData(sheetName, "status")
         // We remove email addresses for which phone numbers have already been found and/or updated
         return emailData.filter((_, index) => statusData[index] !== "already a number" && statusData[index] === "updated" );
     }
@@ -34,7 +64,7 @@ function SheetInteractions() {
         });
         if (dataToWrite.length > 0){
             const sheetName = globalVariables()["SPREADSHEET"]["contactSheet"]["sheetName"];
-            writeAfter(sheetName, dataToWrite);
+            _writeAfter(sheetName, dataToWrite);
         }
     }
   
