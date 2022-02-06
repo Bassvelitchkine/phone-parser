@@ -16,7 +16,7 @@ function globalVariables() {
       },
       "PROCESSING": {
         "phoneStopList": ["0760769872"],
-        "domainStopList": ["walbpartners.com"]
+        "domainStopList": [/@walbpartners.com/g]
       }
     });
   };
