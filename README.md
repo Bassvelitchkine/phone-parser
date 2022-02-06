@@ -36,7 +36,29 @@ This file contains only two "encapsulating" functions. These are **the functions
 
 1. Fork this repo on your github profile and clone it into your machine.
 
-2. In `variables.js` change the spreadsheet id to the id of the spreadsheet you duplicated:
+2. Create a `secret.js` file and put your credentials in it, like so:
+
+   ```js
+   function secret() {
+     const authUrl = "***";
+     const restUrl = "***";
+     const clientId = "***";
+     const username = "***";
+     const password = "***";
+     const apiSecret = "***";
+
+     return Object.freeze({
+       authUrl,
+       restUrl,
+       clientId,
+       username,
+       password,
+       apiSecret,
+     });
+   }
+   ```
+
+3. In `variables.js` change the spreadsheet id to the id of the spreadsheet you duplicated:
 
    ```js
    return Object.freeze({
@@ -46,7 +68,7 @@ This file contains only two "encapsulating" functions. These are **the functions
    });
    ```
 
-3. Still in `variables.js` add phone numbers to the list of stop phone numbers as well as regular expression for the domains to ignore:
+4. Still in `variables.js` add phone numbers to the list of stop phone numbers as well as regular expression for the domains to ignore:
 
    ```js
     return Object.freeze({
@@ -61,7 +83,7 @@ This file contains only two "encapsulating" functions. These are **the functions
 
    Indeed, emails sent by someone from the company (emails that have a specific domain then) ought to be ignored, we won't find phone numbers of interest inside. The same goes for phone numbers. When people from the company send emails, they usually put their phone numbers in the signature. But if someone replies to that very email, we might find the phone number sent in the first place in this reply. We're not interested in it either.
 
-4. Clasp push the code from your local repo _to the Google Apps Script project attached to the spreadsheet you just duplicated_.
+5. Clasp push the code from your local repo _to the Google Apps Script project attached to the spreadsheet you just duplicated_.
 
 # Ackowledgements
 
