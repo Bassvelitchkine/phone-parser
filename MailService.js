@@ -43,9 +43,8 @@
      * messagesProcessing(GMailMessage("Bastien Velitchkine <bastien.velitchkine@gmail.com>", "Bonjour enchanté, ..., Bastien Velitchkine, Automation Engineer, +33 7 60 76 98 72"), GMailMessage("Bastien Velitchkine <bastien.velitchkine@gmail.com>", "Hello Bastien, As-tu reçu mon dernier message ? Alexandre, CEO @ WALB Partners, +33 6 89 43 56 10"), GMailMessage("Bastien Velitchkine <bastien.velitchkine@gmail.com>", "Très bien, ok pour moi ! Bonne soirée, Bastien Velitchkine, Automation Engineer, +33 7 60 76 98 72"), GMailMessage("Stuff dean.lamb@archspire.death>", "Hi French folk, I'm super stoked that you like our art. I hope you'll come see us as soon as we start touring again. Stay metal! Dean 🤘"))
      * // => {"bastien.velitchkine@gmail.com": "Bonjour enchanté, ..., Bastien Velitchkine, Automation Engineer, +33 7 60 76 98 72 Très bien, ok pour moi ! Bonne soirée, Bastien Velitchkine, Automation Engineer, +33 7 60 76 98 72", "dean.lamb@archspire.death": "Hi French folk, I'm super stoked that you like our art. I hope you'll come see us as soon as we start touring again. Stay metal! Dean 🤘"}
      */
-    function messagesProcessing(messages){
+    function messagesProcessing(messages, stopDomains){
     // Filter out messages sent from the stop domains
-    const stopDomains = globalVariables()["PROCESSING"]["domainStopList"];
     const filteredMessages = messages.filter(message => {
         const messageSender = message.getFrom();
         const toKeep = stopDomains.map(stopDomain => !messageSender.match(stopDomain)).reduce((acc, elem) => acc && elem, true)

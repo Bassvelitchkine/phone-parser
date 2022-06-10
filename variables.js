@@ -12,10 +12,6 @@ function globalVariables() {
           "sheetName": "Parameters",
           "lastCheckDate": "A2"
         }
-      },
-      "PROCESSING": {
-        "phoneStopList": ["0760769872"],
-        "domainStopList": [/@walbpartners.com/g]
       }
     });
   };

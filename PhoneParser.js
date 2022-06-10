@@ -13,11 +13,10 @@
      * extractPhoneNumbers(Bonjour enchanté, ..., Bastien Velitchkine, Automation Engineer, +33 7 60 76 98 72 Très bien, ok pour moi ! Bonne soirée, Bastien Velitchkine, Automation Engineer, +33 7 60 76 98 72)
      * // => ["+33 7 60 76 98 72"];
      */
-    function extractPhoneNumbers(text){
+    function extractPhoneNumbers(text, stopList){
         // The regular expression to find phone numbers. Test it on regex101.com if need be.
         const regex = /\+?(\d{1,2}[\-\s\.]?)(\s?\(0\)\s?)?(\d[\-\s\.]?)?(\d{2}[\-\s\.]?){4,6}/g;
         const result = text.match(regex);
-        const stopList = globalVariables()["PROCESSING"]["phoneStopList"];
 
         if (result) {
             // Some extra processing to make sure that extracted numbers begin by a "+" or "0" and keep only unique phone numbers
