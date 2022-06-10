@@ -10,8 +10,7 @@ function SheetInteractions() {
      * @param {Array} data the 2D-Array of data to append to the sheet
      */
     function _writeAfter(sheetName, data){
-        const spreadsheetId = globalVariables()["SPREADSHEET"]["spreadsheetId"];
-        sheet = SpreadsheetApp.openById(spreadsheetId).getSheetByName(sheetName);
+        sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
         const lastRow = sheet.getDataRange().getLastRow();
         sheet.insertRowAfter(lastRow);
         sheet.getRange(lastRow + 1, 1, data.length, data[0].length).setValues(data);
@@ -29,7 +28,7 @@ function SheetInteractions() {
     function _getColumnData(sheetName, columnTitle){
         const spreadsheetVar = globalVariables()["SPREADSHEET"];
         const emailColumn = spreadsheetVar["contactSheet"][columnTitle];
-        const spreadsheet = SpreadsheetApp.openById(spreadsheetVar["spreadsheetId"]);
+        const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
         const contactsRange = spreadsheet.getSheetByName(sheetName).getRange(emailColumn);
         return contactsRange.getValues().flat().filter((elem, index) => index !== 0 && elem !== "");
     }
@@ -79,7 +78,7 @@ function SheetInteractions() {
         const spreadsheetVar = globalVariables()["SPREADSHEET"];
         const sheetName = spreadsheetVar["parametersSheet"]["sheetName"];
         const cellRef = spreadsheetVar["parametersSheet"]["lastCheckDate"]
-        const range = SpreadsheetApp.openById(spreadsheetVar["spreadsheetId"]).getSheetByName(sheetName).getRange(cellRef);
+        const range = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName).getRange(cellRef);
         range.setValue(date);
     }
 
@@ -94,7 +93,7 @@ function SheetInteractions() {
         const spreadsheetVar = globalVariables()["SPREADSHEET"];
         const sheetName = spreadsheetVar["parametersSheet"]["sheetName"];
         const cellRef = spreadsheetVar["parametersSheet"]["lastCheckDate"]
-        const date = SpreadsheetApp.openById(spreadsheetVar["spreadsheetId"]).getSheetByName(sheetName).getRange(cellRef).getValue();
+        const date = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName).getRange(cellRef).getValue();
         return `${date.getFullYear()}/${date.getMonth()+1}/${date.getDate()}`;
     }
   
@@ -117,7 +116,7 @@ function SheetInteractions() {
         let phoneColumn = spreadsheetVar["contactSheet"]["phone"].split(":")[0];
         phoneColumn = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(phoneColumn);
 
-        let contactsData = SpreadsheetApp.openById(spreadsheetVar["spreadsheetId"]).getSheetByName(sheetName).getDataRange().getValues();
+        let contactsData = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName).getDataRange().getValues();
 
         // Slice to remove the column headers
         contactsData = contactsData.slice(1).map((line, index) => {
@@ -151,7 +150,7 @@ function SheetInteractions() {
         const now = new Date(Date.now());
         const currentDate = now.toLocaleString()
 
-        const range = SpreadsheetApp.openById(spreadsheetVar["spreadsheetId"]).getSheetByName(sheetName).getDataRange();
+        const range = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName).getDataRange();
         let allData = range.getValues();
         updatedContacts.forEach(contact => {
             // contact has a lineIndex on the first column and an update status on the second column.
